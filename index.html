@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Magic Touch</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="brand-header">
+
+        <div class="brand-left">
+
+            <div>
+                <h1>Magic Touch</h1>
+                <p>Men's Hair & Beauty Salon</p>
+            </div>
+
+        </div>
+
+        <div class="date">
+            Today
+        </div>
+
+    </header>
+
+
+    <h2>Today's Overview</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <span>💰</span>
+            <p>Total Income</p>
+            <h2 id="totalIncome">₹0</h2>
+        </div>
+
+        <div class="card">
+            <span>💸</span>
+            <p>Total Expense</p>
+            <h2 id="totalExpense">₹0</h2>
+        </div>
+
+        <div class="card profit">
+            <span>📈</span>
+            <p>Net Profit</p>
+            <h2 id="netProfit">₹0</h2>
+        </div>
+
+    </div>
+
+
+    <h2>Payment Overview</h2>
+
+    <div class="payment-box">
+
+        <div>
+            <span>💵 Cash</span>
+            <strong id="cashTotal">₹0</strong>
+        </div>
+
+        <div>
+            <span>📱 GPay / UPI</span>
+            <strong id="gpayTotal">₹0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button
+            class="income-btn"
+            onclick="openIncomeModal()"
+        >
+            + Add Income
+        </button>
+
+        <button
+            class="expense-btn"
+            onclick="openExpenseModal()"
+        >
+            + Add Expense
+        </button>
+
+        <button
+            class="reset-btn"
+            onclick="resetAllData()"
+        >
+            Reset All Data
+        </button>
+
+    </div>
+
+
+    <h2>Recent Transactions</h2>
+
+    <div
+        class="transactions"
+        id="transactionList"
+    ></div>
+
+
+    <div class="reports-section">
+
+        <h2>📊 Business Reports</h2>
+
+        <div class="report-grid">
+
+            <div class="report-card">
+                <h3>📅 Today</h3>
+
+                <div class="report-row">
+                    <span>Income</span>
+                    <span class="report-income" id="todayIncome">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Expense</span>
+                    <span class="report-expense" id="todayExpense">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Profit</span>
+                    <span class="report-profit" id="todayProfit">₹0</span>
+                </div>
+            </div>
+
+
+            <div class="report-card">
+                <h3>🗓️ This Week</h3>
+
+                <div class="report-row">
+                    <span>Income</span>
+                    <span class="report-income" id="weekIncome">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Expense</span>
+                    <span class="report-expense" id="weekExpense">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Profit</span>
+                    <span class="report-profit" id="weekProfit">₹0</span>
+                </div>
+            </div>
+
+
+            <div class="report-card">
+                <h3>📆 This Month</h3>
+
+                <div class="report-row">
+                    <span>Income</span>
+                    <span class="report-income" id="monthIncome">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Expense</span>
+                    <span class="report-expense" id="monthExpense">₹0</span>
+                </div>
+
+                <div class="report-row">
+                    <span>Profit</span>
+                    <span class="report-profit" id="monthProfit">₹0</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- INCOME MODAL -->
+
+<div id="incomeModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeIncomeModal()">&times;</span>
+
+        <h2>Add Income</h2>
+
+        <label>Service</label>
+
+        <select id="service">
+            <option>Haircut</option>
+            <option>Beard Trim</option>
+            <option>Haircut + Beard</option>
+            <option>Facial</option>
+            <option>Hair Wash</option>
+            <option>Other</option>
+        </select>
+
+        <label>Amount</label>
+
+        <input
+            type="number"
+            id="incomeAmount"
+            placeholder="Enter amount"
+        >
+
+        <label>Payment Method</label>
+
+        <select id="paymentMethod">
+            <option>Cash</option>
+            <option>GPay / UPI</option>
+        </select>
+
+        <button
+            class="save-btn"
+            onclick="saveIncome()"
+        >
+            Save Income
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- EXPENSE MODAL -->
+
+<div id="expenseModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="closeExpenseModal()">&times;</span>
+
+        <h2>Add Expense</h2>
+
+        <label>Category</label>
+
+        <select id="expenseCategory">
+            <option>Products</option>
+            <option>Electricity</option>
+            <option>Rent</option>
+            <option>Salary</option>
+            <option>Maintenance</option>
+            <option>Other</option>
+        </select>
+
+        <label>Amount</label>
+
+        <input
+            type="number"
+            id="expenseAmount"
+            placeholder="Enter expense amount"
+        >
+
+        <label>Note</label>
+
+        <input
+            type="text"
+            id="expenseNote"
+            placeholder="Optional note"
+        >
+
+        <button
+            class="save-btn"
+            onclick="saveExpense()"
+        >
+            Save Expense
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let transactions =
+JSON.parse(
+    localStorage.getItem("smartBarberTransactions")
+) || [];
+
+
+transactions =
+transactions.map(function(transaction) {
+
+    if (!transaction.timestamp) {
+        transaction.timestamp = Date.now();
+    }
+
+    return transaction;
+
+});
+
+
+saveTransactions();
+
+
+function openIncomeModal() {
+    document.getElementById("incomeModal").style.display = "flex";
+}
+
+
+function closeIncomeModal() {
+    document.getElementById("incomeModal").style.display = "none";
+}
+
+
+function openExpenseModal() {
+    document.getElementById("expenseModal").style.display = "flex";
+}
+
+
+function closeExpenseModal() {
+    document.getElementById("expenseModal").style.display = "none";
+}
+
+
+function saveIncome() {
+
+    const service =
+        document.getElementById("service").value;
+
+    const amount =
+        Number(document.getElementById("incomeAmount").value);
+
+    const payment =
+        document.getElementById("paymentMethod").value;
+
+
+    if (!amount || amount <= 0) {
+
+        alert("Please enter a valid amount");
+
+        return;
+    }
+
+
+    const transaction = {
+
+        id: Date.now(),
+
+        type: "income",
+
+        service: service,
+
+        amount: amount,
+
+        payment: payment,
+
+        timestamp: Date.now(),
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    transactions.unshift(transaction);
+
+    saveTransactions();
+
+    document.getElementById("incomeAmount").value = "";
+
+    closeIncomeModal();
+
+    updateDashboard();
+}
+
+
+function saveExpense() {
+
+    const category =
+        document.getElementById("expenseCategory").value;
+
+    const amount =
+        Number(document.getElementById("expenseAmount").value);
+
+    const note =
+        document.getElementById("expenseNote").value;
+
+
+    if (!amount || amount <= 0) {
+
+        alert("Please enter a valid expense amount");
+
+        return;
+    }
+
+
+    const transaction = {
+
+        id: Date.now(),
+
+        type: "expense",
+
+        category: category,
+
+        amount: amount,
+
+        note: note,
+
+        timestamp: Date.now(),
+
+        date:
+            new Date().toLocaleString()
+
+    };
+
+
+    transactions.unshift(transaction);
+
+    saveTransactions();
+
+    document.getElementById("expenseAmount").value = "";
+
+    document.getElementById("expenseNote").value = "";
+
+    closeExpenseModal();
+
+    updateDashboard();
+}
+
+
+function resetAllData() {
+
+    const confirmReset =
+        confirm(
+            "Reset all SmartBarber data?\n\nThis will permanently remove all income, expenses and transactions from this browser."
+        );
+
+
+    if (!confirmReset) {
+        return;
+    }
+
+
+    transactions = [];
+
+    localStorage.removeItem(
+        "smartBarberTransactions"
+    );
+
+    updateDashboard();
+
+    alert("All data has been reset.");
+}
+
+
+function saveTransactions() {
+
+    localStorage.setItem(
+        "smartBarberTransactions",
+        JSON.stringify(transactions)
+    );
+}
+
+
+function updateDashboard() {
+
+    let income = 0;
+    let expense = 0;
+    let cash = 0;
+    let gpay = 0;
+
+
+    transactions.forEach(function(transaction) {
+
+        if (transaction.type === "income") {
+
+            income += transaction.amount;
+
+
+            if (transaction.payment === "Cash") {
+
+                cash += transaction.amount;
+
+            } else {
+
+                gpay += transaction.amount;
+
+            }
+        }
+
+
+        if (transaction.type === "expense") {
+
+            expense += transaction.amount;
+
+        }
+
+    });
+
+
+    const profit =
+        income - expense;
+
+
+    document.getElementById("totalIncome").innerText =
+        "₹" + income.toLocaleString("en-IN");
+
+    document.getElementById("totalExpense").innerText =
+        "₹" + expense.toLocaleString("en-IN");
+
+    document.getElementById("netProfit").innerText =
+        "₹" + profit.toLocaleString("en-IN");
+
+    document.getElementById("cashTotal").innerText =
+        "₹" + cash.toLocaleString("en-IN");
+
+    document.getElementById("gpayTotal").innerText =
+        "₹" + gpay.toLocaleString("en-IN");
+
+
+    showTransactions();
+
+    updateReports();
+}
+
+
+function showTransactions() {
+
+    const list =
+        document.getElementById("transactionList");
+
+
+    if (transactions.length === 0) {
+
+        list.innerHTML = `
+
+            <div class="transaction">
+
+                <div>
+
+                    <strong>
+                        No transactions yet
+                    </strong>
+
+                    <p>
+                        Add your first income or expense.
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML = "";
+
+
+    transactions
+    .slice(0, 10)
+    .forEach(function(transaction) {
+
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "transaction";
+
+
+        if (transaction.type === "income") {
+
+            item.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        💇 ${transaction.service}
+                    </strong>
+
+                    <p>
+                        ${transaction.payment}
+                        •
+                        ${transaction.date}
+                    </p>
+
+                </div>
+
+
+                <span class="money-in">
+
+                    + ₹${transaction.amount.toLocaleString("en-IN")}
+
+                </span>
+
+            `;
+
+        } else {
+
+            item.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        💸 ${transaction.category}
+                    </strong>
+
+                    <p>
+                        ${transaction.note || "Expense"}
+                        •
+                        ${transaction.date}
+                    </p>
+
+                </div>
+
+
+                <span class="money-out">
+
+                    - ₹${transaction.amount.toLocaleString("en-IN")}
+
+                </span>
+
+            `;
+
+        }
+
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+function calculateReport(startTime, endTime) {
+
+    let income = 0;
+    let expense = 0;
+
+
+    transactions.forEach(function(transaction) {
+
+        const time =
+            transaction.timestamp;
+
+
+        if (
+            time >= startTime &&
+            time <= endTime
+        ) {
+
+
+            if (transaction.type === "income") {
+
+                income += transaction.amount;
+
+            }
+
+
+            if (transaction.type === "expense") {
+
+                expense += transaction.amount;
+
+            }
+
+        }
+
+    });
+
+
+    return {
+
+        income: income,
+
+        expense: expense,
+
+        profit:
+            income - expense
+
+    };
+}
+
+
+function updateReports() {
+
+    const now =
+        new Date();
+
+
+    const todayStart =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        ).getTime();
+
+
+    const todayEnd =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            23,
+            59,
+            59,
+            999
+        ).getTime();
+
+
+    const weekStartDate =
+        new Date(now);
+
+
+    let day =
+        weekStartDate.getDay();
+
+
+    if (day === 0) {
+        day = 7;
+    }
+
+
+    weekStartDate.setDate(
+
+        weekStartDate.getDate()
+
+        -
+
+        day
+
+        +
+
+        1
+
+    );
+
+
+    weekStartDate.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    const weekStart =
+        weekStartDate.getTime();
+
+
+    const weekEnd =
+        now.getTime();
+
+
+    const monthStart =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            1
+        ).getTime();
+
+
+    const monthEnd =
+        now.getTime();
+
+
+    const todayReport =
+        calculateReport(
+            todayStart,
+            todayEnd
+        );
+
+
+    const weekReport =
+        calculateReport(
+            weekStart,
+            weekEnd
+        );
+
+
+    const monthReport =
+        calculateReport(
+            monthStart,
+            monthEnd
+        );
+
+
+    setReportValues(
+        "today",
+        todayReport
+    );
+
+
+    setReportValues(
+        "week",
+        weekReport
+    );
+
+
+    setReportValues(
+        "month",
+        monthReport
+    );
+}
+
+
+function setReportValues(type, report) {
+
+    document.getElementById(
+        type + "Income"
+    ).innerText =
+        "₹" +
+        report.income.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        type + "Expense"
+    ).innerText =
+        "₹" +
+        report.expense.toLocaleString("en-IN");
+
+
+    document.getElementById(
+        type + "Profit"
+    ).innerText =
+        "₹" +
+        report.profit.toLocaleString("en-IN");
+}
+
+
+updateDashboard();
+
+</script>
+
+</body>
+
+</html>
